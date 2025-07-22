@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Каталог товаров</h1>
+      <form class="filter">
+        <select name="category" id="category">
+          <option value="">Категория</option>
+        </select>
+        <select name="sorting" id="sorting">
+          <option value="">Сортировать</option>
+          <option value="price-asc">Сначала недорогие</option>
+          <option value="price-desc">Сначала дорогие</option>
+          <option value="rating-desc">Сначала лучшие</option>
+          <option value="alphabetically">По алфавиту</option>
+        </select>
+        <input placeholder="Цена от" class="price-input" type="number" id="price-from" name="price-from"/>
+        <input placeholder="Цена до" class="price-input" type="number" id="price-until" name="price-until" />
+        <button type="submit">Применить</button>
+      </form>
+      <div class="products">
+        <div class="products-list"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
