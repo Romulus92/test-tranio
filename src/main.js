@@ -6,14 +6,11 @@ let products = data.products;
 const filterForm = document.querySelector('form.filter');
 
 filterForm.addEventListener('submit', (event) => {
-	console.log('submit')
 	event.preventDefault();
 	const category = document.querySelector('#category').value
 	const minPrice = document.querySelector('#price-from').value
 	const maxPrice = document.querySelector('#price-until').value
 	const sort = document.querySelector('#sorting').value
-
-	console.log(category, minPrice, maxPrice, sort)
 
 	products = filterAndSortProducts(products, {
 		category,
@@ -30,7 +27,6 @@ const getMinMaxPrice = () => {
 	const prices = products.map(product => product.price);
 	const minPrice = Math.min(...prices);
 	const maxPrice = Math.max(...prices);
-	console.log(minPrice, maxPrice)
 
 	priceInputs.forEach((input) => {
 		input.min = minPrice;
@@ -53,19 +49,13 @@ const filterAndSortProducts = (
     result = result.filter(p => p.category === category);
   }
 
-	console.log(result)
-
   if (minPrice !== '') {
     result = result.filter(p => p.price >= minPrice);
   }
 
-	console.log(result)
-
   if (maxPrice !== '') {
     result = result.filter(p => p.price <= maxPrice);
   }
-
-	console.log(result)
 
   if (sort !== '') {
     result.sort((a, b) => {
@@ -92,7 +82,7 @@ const filterAndSortProducts = (
 const generateTemplate = (type, item) => {
 	switch(type) {
 		case "product":
-			return `<a class='products-item'>
+			return `<a class='products-item fade-in'>
 				<picture class="products-picture">
 					<source media="(min-width: 1024px)" srcset="${item.image.desktop}">
 					<source media="(min-width: 575px)" srcset="${item.image.tablet}">
@@ -101,6 +91,7 @@ const generateTemplate = (type, item) => {
 				<div class="products-info">
 					<span class="products-name">${item.name}</span>
 					<span class="products-price">$${item.price.toLocaleString('en-US')} </span>
+					<p class="products-description">${item.description}</p>
 					<div class="products-rating">&#11088; ${item.rating}</div>
 					<span class="products-category">${item.category}</span>
 				</div>
@@ -123,7 +114,9 @@ const renderItem = (type, item) => {
 const loadItems = (type, parentSelector, itemsArray) => {
 	products = data.products
 	const parent = document.querySelector(parentSelector)
-	parent.innerHTML = ''
+	if (type === 'product') {
+		parent.innerHTML = ''
+	}
 	const fragment = document.createDocumentFragment();
 	
 	itemsArray.forEach((item) => {
@@ -131,6 +124,19 @@ const loadItems = (type, parentSelector, itemsArray) => {
 	});
 
 	parent.appendChild(fragment)
+	if (type === 'product') {
+		removeAnimationFromProducts()
+	}
+}
+
+const removeAnimationFromProducts = () => {
+	const productItems = document.querySelectorAll('.products-item')
+
+	productItems.forEach((item) => {
+		item.addEventListener('animationend', () => {
+			item.classList.remove('fade-in')
+		})
+	})
 }
 
 window.onload = (event) => {
